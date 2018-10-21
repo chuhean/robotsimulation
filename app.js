@@ -60,14 +60,14 @@ inquirer
         let placementCoor = answers.confirmCoor.split(',');
         robotXCoordinate = Number(placementCoor[0].trim());
         robotYCoordinate = Number(placementCoor[1].trim());
-        let robotTextDirection = String(placementCoor[2].toUpperCase.trim());
+        let robotTextDirection = String(placementCoor[2].toUpperCase().trim());
         
         //Check if input coordinates is one of the following number. Otherwise show error to user.
-        if (![0,1,2,3,4,5].contains(robotXCoordinate) || ![0,1,2,3,4,5].contains(robotYCoordinate)){
-            console.log('Invalid coordinate input. Coordinate must be between 0 to 5');
+        if (![0,1,2,3,4,5].includes(robotXCoordinate) || ![0,1,2,3,4,5].includes(robotYCoordinate)){
+            console.log('Invalid coordinate input. Coordinate must be between 0 to 5.');
         } 
         //Check if input direction is one of the following direction. Otherwise show error to user.
-        else if (!["NORTH", "EAST", "SOUTH", "WEST"].contains(robotTextDirection)){
+        else if (!["NORTH", "EAST", "SOUTH", "WEST"].includes(robotTextDirection)){
             console.log('Invalid direction input. Direction must be either NORTH, EAST, SOUTH, or WEST.');
         }
         

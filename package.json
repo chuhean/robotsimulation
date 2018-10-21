@@ -1,0 +1,15 @@
+{
+  "name": "robotsimulation",
+  "version": "1.0.0",
+  "description": "A Command Line Application that simulates a robot moving on a 5 x 5 table.",
+  "main": "app.js",
+  "dependencies": {
+    "inquirer": "^6.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Steven Oon",
+  "license": "ISC"
+}
