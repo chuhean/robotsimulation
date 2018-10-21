@@ -9,7 +9,7 @@ User will follow the prompt in the application by placing the robot with a forma
 _Note: Make sure you have installed Node.js and NPM on your machine. If you haven't, please go to [Node.js](https://nodejs.org "Node.js")
 to install. NPM will automatically be installed on your machine when your are installing Node.js_. 
 
-1. In the directory, run `npm init`.
+1. In the directory, run `npm install`.
 2. Run `node app.js`.
 3. Follow the prompt to start playing. Enjoy!
 
