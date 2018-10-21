@@ -1,12 +1,11 @@
 const inquirer = require('inquirer');
-const checkRobotMovement = require('./checkRobotMovement');
 
 //Declare robot X, Y, and Direction variables.
 let robotXCoordinate;
 let robotYCoordinate;
 let robotDirection;
 
-//The following is the direction of the robot is facing, converted as numerical guidance. 
+//The following is the direction of the robot is facing, converted as numerical number to be used later. 
 let direction = {
     'NORTH'   : 1,
     'EAST'    : 2,
@@ -21,7 +20,9 @@ function getKeyByValue(object, value) {
 
 
 
-//*************************************************Questions Prompts******************************************************
+//************************************************************************************************************************************************
+//**********************************************************Questions Prompts*********************************************************************
+
 const initialQuestion = [
     { type: 'input', 
     name: 'confirmPlacement', 
@@ -46,7 +47,7 @@ const initialQuestion = [
 
 const secondQuestion = [{
   type: 'input',
-  name: 'response',
+  name: 'confirmCoor',
   message: 'Type the placement coordinate in X,Y,F format.',
 }];
 
@@ -58,7 +59,9 @@ const thirdQuestions = [{
 
 
 
-//********************************************Command Line Questions & Response********************************************
+//*************************************************************************************************************************************************
+//****************************************************Command Line Questions & Response************************************************************
+
 //'question1' will prompt user to type 'PLACE' 
 const question1 = () => {
     inquirer
@@ -91,16 +94,18 @@ const question2 = () => {
                 question1();
             }
             
-            //Assign numerial direction according to 'direction' object.
-            robotDirection = direction[robotTextDirection];
+            else {
+                //Assign numerial direction according to 'direction' object.
+                robotDirection = direction[robotTextDirection];
+                
+                question3();
+            }
             
-            question3();
-        
         });
     
 };
 
-//'question2' will prompt user for the following command: PLACE, MOVE, LEFT, RIGHT, REPORT. 
+//'question3' will prompt user for the following command: PLACE, MOVE, LEFT, RIGHT, REPORT. 
 const question3 = () => {
     inquirer
         .prompt(thirdQuestions)
@@ -108,43 +113,57 @@ const question3 = () => {
             //Sanitize user's input to upper case and remove all whitespace.
             let sanitizedAnswer = answers.response.toUpperCase().trim();
             
-            //Run this code block if user types 'MOVE'. Then add or minus their coordinate according to their direction. 
+            //Run this code block if user types 'MOVE'. Then add or minus their coordinate, according to their direction. 
+            //If robot is at the edge of table, don't take any action, and show error to user.
             if (sanitizedAnswer === 'MOVE'){
                 
                 if (robotDirection === 1){
-                    robotXCoordinate++;
+                   
+                    if (robotYCoordinate === 5){
+                        console.log('Invalid movement. Robot will fall down the table.');
+                    } else {  robotYCoordinate++ }
+                    
                 } else if (robotDirection === 2){
-                    robotYCoordinate++;
+                    
+                    if (robotXCoordinate === 5){
+                        console.log('Invalid movement. Robot will fall down the table.');
+                    } else {  robotXCoordinate++ }
+                    
                 } else if (robotDirection === 3){
-                    robotXCoordinate--;
-                } else {
-                    robotYCoordinate--;
+                    
+                    if (robotYCoordinate === 0){
+                        console.log('Invalid movement. Robot will fall down the table.');
+                    } else { robotYCoordinate-- }
+                    
+                } else if (robotDirection === 4){
+                    
+                    if (robotXCoordinate === 0){
+                        console.log('Invalid movement. Robot will fall down the table.');
+                    } else { robotXCoordinate-- }
+                    
                 }
-                
-                //Check if robot will fall down or not. If robot falls down, undo the previous movement, and show an error to user.
-                checkRobotMovement.checkXY(robotXCoordinate, robotYCoordinate);
                 
                 question3();
             }
             
             //Run this code block if user types 'LEFT'. Then move the robot direction's to left side, by minus 1 to their numerical direction. 
+            //If the number is 1, directly assign it to 4 without minus the number.
             else if (sanitizedAnswer === 'LEFT'){
                 
-                robotDirection--;
-                
-                //Check if the direction exceed/below the number listed in the 'direction' object, and change it to appropriate number.
-                checkRobotMovement.checkDirection(robotDirection);
+                if (robotDirection === 1){
+                    robotDirection = 4;
+                } else { robotDirection-- }
                 
                 question3();
             }
             
             //Run this code block if user types 'RIGHT'. Then move the robot direction's to right side, by adding 1 to their numerical direction. 
+            //If the number is 4, directly assign it to 41 without adding the number.
             else if (sanitizedAnswer === 'RIGHT'){
                 
-                robotDirection++;
-                
-                //Check if the direction exceed/below the number listed in the 'direction' object, and change it to appropriate number.
-                checkRobotMovement.checkDirection(robotDirection);
+                if (robotDirection === 4){
+                    robotDirection = 1;
+                } else { robotDirection++ }
                 
                 question3();
             }
@@ -175,4 +194,5 @@ const question3 = () => {
         
 };
 
+//Run the first 'question1' function at start of application.
 question1();
