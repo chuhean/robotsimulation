@@ -11,7 +11,7 @@ let direction = {
     'EAST'    : 2,
     'SOUTH'   : 3,
     'WEST'    : 4  
-}
+};
 
 //This function returns the textual direction, based on the numerial direction, as per the 'direction' object. 
 function getKeyByValue(object, value) {
@@ -47,7 +47,7 @@ const initialQuestions = [
 const questions = [{
   type: 'input',
   name: 'response',
-  message: 'What do you want to do (PLACE/MOVE/LEFT/RIGHT/REPORT)?',
+  message: 'What do you want to do: PLACE/MOVE/LEFT/RIGHT/REPORT ?',
 }];
 
 
@@ -56,65 +56,76 @@ const questions = [{
 inquirer
     .prompt(initialQuestions)
     .then(answers => {
-        let placementCoor = answers.confirmCoor;
-        console.log (typeof placementCoor);
         
-    });
-    
-inquirer
-    .prompt(questions)
-    .then(answers => {
-        //Sanitize user's input to upper case and remove all whitespace.
-        let sanitizedAnswer = answers.response.toUpperCase().trim();
+        let placementCoor = answers.confirmCoor.split(',');
+        robotXCoordinate = Number(placementCoor[0].trim());
+        robotYCoordinate = Number(placementCoor[1].trim());
+        let robotTextDirection = String(placementCoor[2].toUpperCase.trim());
+        robotDirection = direction[robotTextDirection];
         
-        //Run this code block if user types 'MOVE'. Then add or minus their coordinate according to their direction. 
-        if (sanitizedAnswer === 'MOVE'){
-            
-            if (robotDirection === 1){
-                robotXCoordinate++;
-            } else if (robotDirection === 2){
-                robotYCoordinate++;
-            } else if (robotDirection === 3){
-                robotXCoordinate--;
-            } else {
-                robotYCoordinate--;
-            }
-            
-            //Check if robot will fall down or not. If robot falls down, undo the previous movement, and show an error to user.
-            checkRobotMovement.checkXY(robotXCoordinate, robotYCoordinate);
-            
+        //Check if input coordinates is one of the following number. Otherwise show error to user.
+        if (![0,1,2,3,4,5].contains(robotXCoordinate) || ![0,1,2,3,4,5].contains(robotYCoordinate)){
+            console.log('Invalid coordinate input. Coordinate must be between 0 to 5');
+        } else if (!["NORTH", "EAST", "SOUTH", "WEST"].contains(robotTextDirection)){
+            console.log('Invalid direction input. Direction must be either NORTH, EAST, SOUTH, or WEST.');
         }
         
-        //Run this code block if user types 'LEFT'. Then move the robot direction's to left side, by minus 1 to their numerical direction. 
-        else if (sanitizedAnswer === 'LEFT'){
-            
-            robotDirection--;
-            
-            //Check if the direction exceed/below the number listed in the 'direction' object, and change it to appropriate number.
-            checkRobotMovement.checkDirection(robotDirection);
-            
-        }
+        inquirer
+            .prompt(questions)
+            .then(answers => {
+                //Sanitize user's input to upper case and remove all whitespace.
+                let sanitizedAnswer = answers.response.toUpperCase().trim();
+                
+                //Run this code block if user types 'MOVE'. Then add or minus their coordinate according to their direction. 
+                if (sanitizedAnswer === 'MOVE'){
+                    
+                    if (robotDirection === 1){
+                        robotXCoordinate++;
+                    } else if (robotDirection === 2){
+                        robotYCoordinate++;
+                    } else if (robotDirection === 3){
+                        robotXCoordinate--;
+                    } else {
+                        robotYCoordinate--;
+                    }
+                    
+                    //Check if robot will fall down or not. If robot falls down, undo the previous movement, and show an error to user.
+                    checkRobotMovement.checkXY(robotXCoordinate, robotYCoordinate);
+                    
+                }
+                
+                //Run this code block if user types 'LEFT'. Then move the robot direction's to left side, by minus 1 to their numerical direction. 
+                else if (sanitizedAnswer === 'LEFT'){
+                    
+                    robotDirection--;
+                    
+                    //Check if the direction exceed/below the number listed in the 'direction' object, and change it to appropriate number.
+                    checkRobotMovement.checkDirection(robotDirection);
+                    
+                }
+                
+                //Run this code block if user types 'RIGHT'. Then move the robot direction's to right side, by adding 1 to their numerical direction. 
+                else if (sanitizedAnswer === 'RIGHT'){
+                    
+                    robotDirection++;
+                    
+                    //Check if the direction exceed/below the number listed in the 'direction' object, and change it to appropriate number.
+                    checkRobotMovement.checkDirection(robotDirection);
+                    
+                }
+                
+                //Run this code block if user types 'REPORT'. Then report back the robot coordinate in the console. 
+                else if (sanitizedAnswer === 'REPORT'){
+                    
+                    let robotTextDirection = getKeyByValue(direction, robotDirection);
+                    console.log(`The robot's coordinate is (${robotXCoordinate}, ${robotYCoordinate}, ${robotTextDirection}).`);
+                    
+                }
+                
+                //Check if sanitized answer satisfy one of the answer options above. Otherwise show an error to user.
+                else {
+                    console.log('Invalid input. Please try again.');
+                }
+            });
         
-        //Run this code block if user types 'RIGHT'. Then move the robot direction's to right side, by adding 1 to their numerical direction. 
-        else if (sanitizedAnswer === 'RIGHT'){
-            
-            robotDirection++;
-            
-            //Check if the direction exceed/below the number listed in the 'direction' object, and change it to appropriate number.
-            checkRobotMovement.checkDirection(robotDirection);
-            
-        }
-        
-        //Run this code block if user types 'REPORT'. Then report back the robot coordinate in the console. 
-        else if (sanitizedAnswer === 'REPORT'){
-            
-            let robotTextDirection = getKeyByValue(direction, robotDirection);
-            console.log(`The robot's coordinate is (${robotXCoordinate}, ${robotYCoordinate}, ${robotTextDirection}).`);
-            
-        }
-        
-        //Check if sanitized answer satisfy one of the answer options above. Otherwise show an error to user.
-        else {
-            console.log('Invalid input. Please try again.');
-        }
     });
