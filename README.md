@@ -21,11 +21,11 @@ to install. NPM will automatically be installed on your machine when your are in
 
 
 ## Commands:
-* PLACE: Used at the beginning of the program before placement of robot coordinate. It can also be used to restart the placement when playing the robot.
-* MOVE: To move the robot one unit in the direction it is facing. This action will be invalid when the robot is at the edge of table, eg X or Y coordinate at 0 or 5.
-* LEFT: To make the robot turn to the left direction. For example, if it is facing south, using this command will make it face to the east.
-* RIGHT: To make the robot turn to the right direction. For example, if it is facing west, using this command will make it face to the north.
-* REPORT: To show the robot's current coordinate and the direction the robot is facing to the user.
+* **PLACE**: Used at the beginning of the program before placement of robot coordinate. It can also be used to restart the placement when playing the robot.
+* **MOVE**: To move the robot one unit in the direction it is facing. This action will be invalid when the robot is at the edge of table, eg X or Y coordinate at 0 or 5.
+* **LEFT**: To make the robot turn to the left direction. For example, if it is facing south, using this command will make it face to the east.
+* **RIGHT**: To make the robot turn to the right direction. For example, if it is facing west, using this command will make it face to the north.
+* **REPORT**: To show the robot's current coordinate and the direction the robot is facing to the user.
 
 
 
