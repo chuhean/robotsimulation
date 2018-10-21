@@ -38,7 +38,7 @@ const initialQuestions = [
           }
           // Pass the return value in the done callback
           done(null, true);
-        }, 3000);
+        }, 0);
       }
     },
     { type: 'input', name: 'confirmCoor', message: 'Type the placement coordinate in X,Y,F format.'}
