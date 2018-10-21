@@ -24,7 +24,7 @@ function getKeyByValue(object, value) {
 const initialQuestions = [
     { type: 'input', 
     name: 'confirmPlacement', 
-    message: 'Please type "place" to start',
+    message: 'Please type "PLACE" to start',
     validate: function (input) {
         // Declare function as asynchronous, and save the done callback
         var done = this.async();
@@ -57,17 +57,15 @@ inquirer
     .prompt(initialQuestions)
     .then(answers => {
         let placementCoor = answers.confirmCoor;
-
+        console.log (typeof placementCoor);
         
     });
     
 inquirer
     .prompt(questions)
     .then(answers => {
-        //Sanitize user's input to lower case and remove all whitespace.
+        //Sanitize user's input to upper case and remove all whitespace.
         let sanitizedAnswer = answers.response.toUpperCase().trim();
-        
-        //Check if sanitized answer satisfy one of the answer options. Otherwise show an error to user.
         
         //Run this code block if user types 'MOVE'. Then add or minus their coordinate according to their direction. 
         if (sanitizedAnswer === 'MOVE'){
@@ -88,7 +86,7 @@ inquirer
         }
         
         //Run this code block if user types 'LEFT'. Then move the robot direction's to left side, by minus 1 to their numerical direction. 
-        if (sanitizedAnswer === 'LEFT'){
+        else if (sanitizedAnswer === 'LEFT'){
             
             robotDirection--;
             
@@ -98,7 +96,7 @@ inquirer
         }
         
         //Run this code block if user types 'RIGHT'. Then move the robot direction's to right side, by adding 1 to their numerical direction. 
-        if (sanitizedAnswer === 'RIGHT'){
+        else if (sanitizedAnswer === 'RIGHT'){
             
             robotDirection++;
             
@@ -108,11 +106,15 @@ inquirer
         }
         
         //Run this code block if user types 'REPORT'. Then report back the robot coordinate in the console. 
-        if (sanitizedAnswer === 'REPORT'){
+        else if (sanitizedAnswer === 'REPORT'){
             
             let robotTextDirection = getKeyByValue(direction, robotDirection);
             console.log(`The robot's coordinate is (${robotXCoordinate}, ${robotYCoordinate}, ${robotTextDirection}).`);
             
         }
         
+        //Check if sanitized answer satisfy one of the answer options above. Otherwise show an error to user.
+        else {
+            console.log('Invalid input. Please try again.');
+        }
     });
